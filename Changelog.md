@@ -1,5 +1,9 @@
 # Changes
 
+## Unreleased
+
+* Correctly handle UTF-16 strings.
+
 ## 2.0.4
 
 * Correct usage example in readme.

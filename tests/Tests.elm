@@ -1,18 +1,8 @@
-port module Main exposing (main, emit)
+port module Tests exposing (tests, utf16)
 
-import Test.Runner.Node exposing (run, TestProgram)
-import Test exposing (Test, describe, test)
 import Expect
-import Json.Encode exposing (Value)
 import Murmur3
-
-
-main : TestProgram
-main =
-    run emit tests
-
-
-port emit : ( String, Value ) -> Cmd msg
+import Test exposing (Test, describe, test)
 
 
 hashFn : a -> Int
@@ -30,3 +20,19 @@ tests =
         , test "ls" <| \() -> Expect.equal 4202619459 <| hashFn (List.range 1 6)
         , test "bool" <| \() -> Expect.equal 108766572 <| hashFn False
         ]
+
+
+utf16 : Test
+utf16 =
+    [ ( "Turn me into a hash", 4138100590 )
+    , ( "✓ à la mode", 146308576 )
+    , ( "💩💩💩", 4037155920 )
+    ]
+        |> List.map
+            (\( input, output ) ->
+                test input <|
+                    \_ ->
+                        Murmur3.hashString 1234 input
+                            |> Expect.equal output
+            )
+        |> describe "UTF-16 strings"
