@@ -43,17 +43,11 @@ hashFold c ( shift, seed, hash ) =
         ( shift + 8, seed, res )
 
 
-finalize : Int -> ( Int, Int, Int ) -> Int
-finalize strLength ( _, seed, hash ) =
+finalize : Int -> Int -> Int
+finalize strLength hash =
     let
-        acc =
-            if hash /= 0 then
-                mix seed hash
-            else
-                seed
-
         h1 =
-            Bitwise.xor acc strLength
+            Bitwise.xor hash strLength
 
         h2 =
             h1
